@@ -59,5 +59,23 @@ namespace VF.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream freezing_sfx {
+            get {
+                return ResourceManager.GetStream("freezing_sfx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ice_destruction_sfx {
+            get {
+                return ResourceManager.GetStream("ice_destruction_sfx", resourceCulture);
+            }
+        }
     }
 }

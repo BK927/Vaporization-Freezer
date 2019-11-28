@@ -2,7 +2,9 @@
 Vaporization Freezer/.vs/
 Vaporization Freezer/bin/
 Vaporization Freezer/obj
-icon.ico
-icon.png
-icon.psd
-packages
+src/
+packages/
+Vaporization Freezer/bg.png
+Vaporization Freezer/icon.ico
+Vaporization Freezer/Resources/freezing_sfx.wav
+Vaporization Freezer/Resources/ice_destruction_sfx.wav

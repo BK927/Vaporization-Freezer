@@ -5,11 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VF"
         mc:Ignorable="d"
-        Title="Vaporization Freezer" Height="215.92" Width="342.4" Icon="icon.ico" ResizeMode="NoResize">
+        Title="Vaporization Freezer" Height="215.92" Width="342.4" Icon="icon.ico" ResizeMode="NoResize" Background="White">
     <Window.Resources>
         <local:WaterMarkTextBox x:Key="TextHint"/>
     </Window.Resources>
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="bg.png" Stretch="Uniform" Opacity="0.4">
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" CenterY="0.45"/>
+                        <SkewTransform CenterY="0.45"/>
+                        <RotateTransform CenterY="0.45"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
+        </Grid.Background>
         <Border Name="blockScr" Background="LightGray" Panel.ZIndex="1" Opacity="0.9" Visibility="{Binding BlockScrSwitch, Mode=OneWay, FallbackValue=collapsed}">
             <TextBlock Text="Blocking...." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="48" />
         </Border>
@@ -23,7 +35,7 @@
                 <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"  FontWeight="Bold" FontSize="24" Foreground="#FF323232" VerticalAlignment="Center" Content="Minute :" />
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Input time..." x:Name="timeInputHint" Grid.RowSpan="1" FontWeight="Bold" FontSize="23" Foreground="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" >
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Input time..." x:Name="timeInputHint" Grid.RowSpan="1" FontWeight="Bold" FontSize="23" Foreground="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" Panel.ZIndex="1" IsHitTestVisible="False" >
                 <TextBlock.Visibility>
                     <MultiBinding Converter="{StaticResource TextHint}">
                         <Binding ElementName="timeInput" Path="Text.IsEmpty"/>
@@ -31,8 +43,12 @@
                     </MultiBinding>
                 </TextBlock.Visibility>
             </TextBlock>
-            <TextBox Text="{Binding Minutes, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" KeyDown="NumericTextBox_PreviewKeyDown" Grid.Row="0" Grid.Column="1" x:Name="timeInput" Grid.RowSpan="1" FontWeight="Bold" FontSize="32" TextAlignment="Center" TextWrapping="NoWrap" Foreground="#FF323232" VerticalAlignment="Center" Background="{x:Null}" Margin="10,0" />
-            <Button Command="{Binding freezeBtn}" x:Name="freezeBtn" Grid.Row="1" Grid.ColumnSpan="2" Width="160" Height="50" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!"/>
+            <TextBox Text="{Binding Minutes, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" KeyDown="NumericTextBox_PreviewKeyDown" Grid.Row="0" Grid.Column="1" x:Name="timeInput" Grid.RowSpan="1" FontWeight="Bold" FontSize="32" TextAlignment="Center" TextWrapping="NoWrap" Foreground="#FF323232" VerticalAlignment="Center" Background="White" Margin="10,0" />
+            <Button Command="{Binding freezeBtn}" x:Name="freezeBtn" Grid.Row="1" Grid.ColumnSpan="2" Width="160" Height="50" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!">
+                <Button.Effect>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="3" Opacity="0.1"/>
+                </Button.Effect>
+            </Button>
         </Grid>
     </Grid>
 </Window>

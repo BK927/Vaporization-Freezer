@@ -8,6 +8,8 @@ using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Media;
 
 namespace VF.ViewModel
 {
@@ -33,17 +35,17 @@ namespace VF.ViewModel
             private set{ }
         }
 
-        private static System.Timers.Timer blockTimer;
-        private static System.Timers.Timer blockRepeater;
+        private static System.Timers.Timer blockTimer = new System.Timers.Timer();
+        private static System.Timers.Timer blockRepeater = new System.Timers.Timer(100);
+        static private SoundPlayer freezingSfx = new SoundPlayer(Properties.Resources.freezing_sfx);
+        static private SoundPlayer iceBreakSfx = new SoundPlayer(Properties.Resources.ice_destruction_sfx);
 
         public MainWindowVM()
         {
             freezeBtn = new NoConditionCMD(freeze);
-            blockTimer = new System.Timers.Timer();
             blockTimer.Elapsed += (sender, e) => timerOverEvent(sender, e, OnPropertyChanged);
             blockTimer.AutoReset = false;
 
-            blockRepeater = new System.Timers.Timer(100);
             blockRepeater.Elapsed += (sender, e) => LockWorkStation();
             blockRepeater.AutoReset = true;
         }
@@ -59,6 +61,7 @@ namespace VF.ViewModel
                 blockTimer.Interval = Convert.ToDouble(Minutes) * 60000;
                 blockTimer.Start();
                 blockRepeater.Start();
+                freezingSfx.Play();
                 OnPropertyChanged("BlockScrSwitch");
             }
         }
@@ -68,6 +71,7 @@ namespace VF.ViewModel
             blockTimer.Stop();
             blockRepeater.Stop();
             onPropertyChanged("BlockScrSwitch");
+            iceBreakSfx.Play();
         }
     }
 }
