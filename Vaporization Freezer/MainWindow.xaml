@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VF"
         mc:Ignorable="d"
-        Title="Vaporization Freezer" Height="215.92" Width="342.4" Icon="icon.ico" ResizeMode="NoResize" Background="White">
+        Title="Vaporization Freezer" Height="245.92" Width="342.4" Icon="icon.ico" ResizeMode="NoResize" Background="White">
     <Window.Resources>
         <local:WaterMarkTextBox x:Key="TextHint"/>
     </Window.Resources>
@@ -14,9 +14,9 @@
             <ImageBrush ImageSource="bg.png" Stretch="Uniform" Opacity="0.4">
                 <ImageBrush.RelativeTransform>
                     <TransformGroup>
-                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" CenterY="0.45"/>
-                        <SkewTransform CenterY="0.45"/>
-                        <RotateTransform CenterY="0.45"/>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5" CenterY="0.5"/>
+                        <SkewTransform CenterY="0.5"/>
+                        <RotateTransform CenterY="0.5"/>
                         <TranslateTransform/>
                     </TransformGroup>
                 </ImageBrush.RelativeTransform>
@@ -31,11 +31,12 @@
                 <ColumnDefinition Width="9*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="7*"/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="117*"/>
+                <RowDefinition Height="59*"/>
+                <RowDefinition Height="20*"/>
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"  FontWeight="Bold" FontSize="24" Foreground="#FF323232" VerticalAlignment="Center" Content="Minute :" />
-            <TextBlock Grid.Row="0" Grid.Column="1" Text="Input time..." x:Name="timeInputHint" Grid.RowSpan="1" FontWeight="Bold" FontSize="23" Foreground="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" Panel.ZIndex="1" IsHitTestVisible="False" >
+            <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"  FontWeight="Bold" FontSize="24" Foreground="#FF323232" VerticalAlignment="Center" Content="Minute :" Grid.ColumnSpan="2" Margin="0,36,203,38.8" Height="42" />
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Input time..." x:Name="timeInputHint" Grid.RowSpan="1" FontWeight="Bold" FontSize="23" Foreground="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="35.2,42,35,43.8" Panel.ZIndex="1" IsHitTestVisible="False" Height="31" Width="133" >
                 <TextBlock.Visibility>
                     <MultiBinding Converter="{StaticResource TextHint}">
                         <Binding ElementName="timeInput" Path="Text.IsEmpty"/>
@@ -43,12 +44,13 @@
                     </MultiBinding>
                 </TextBlock.Visibility>
             </TextBlock>
-            <TextBox Text="{Binding Minutes, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" KeyDown="NumericTextBox_PreviewKeyDown" Grid.Row="0" Grid.Column="1" x:Name="timeInput" Grid.RowSpan="1" FontWeight="Bold" FontSize="32" TextAlignment="Center" TextWrapping="NoWrap" Foreground="#FF323232" VerticalAlignment="Center" Background="White" Margin="10,0" />
-            <Button Command="{Binding freezeBtn}" x:Name="freezeBtn" Grid.Row="1" Grid.ColumnSpan="2" Width="160" Height="50" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!">
+            <TextBox Text="{Binding Minutes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="NumericTextBox_PreviewKeyDown" Grid.Row="0" Grid.Column="1" x:Name="timeInput" Grid.RowSpan="1" FontWeight="Bold" FontSize="32" TextAlignment="Center" TextWrapping="NoWrap" Foreground="#FF323232" VerticalAlignment="Center" Background="White" Margin="10.2,35,9,36.8" Height="45" />
+            <Button Command="{Binding freezeBtn}" x:Name="freezeBtn" Grid.Row="1" Grid.ColumnSpan="2" Width="160" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!" Margin="78,5.2,78,3" Grid.RowSpan="1">
                 <Button.Effect>
                     <DropShadowEffect BlurRadius="5" ShadowDepth="3" Opacity="0.1"/>
                 </Button.Effect>
             </Button>
+            <CheckBox x:Name="strongSwitch" IsChecked="{Binding StrongSwitch}" Grid.Column="0" Grid.Row="2" Width="100" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="15" FontFamily="Segoe UI Semibold" FontSize="11" Foreground="DarkSlateGray" ToolTip="This will block your computer even after rebooting">Strong Blocking</CheckBox>
         </Grid>
     </Grid>
 </Window>

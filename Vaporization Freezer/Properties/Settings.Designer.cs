@@ -22,5 +22,52 @@ namespace VF.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsStrong {
+            get {
+                return ((bool)(this["IsStrong"]));
+            }
+            set {
+                this["IsStrong"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime OverTime {
+            get {
+                return ((global::System.DateTime)(this["OverTime"]));
+            }
+            set {
+                this["OverTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string InitialedTime {
+            get {
+                return ((string)(this["InitialedTime"]));
+            }
+            set {
+                this["InitialedTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsRunning {
+            get {
+                return ((bool)(this["IsRunning"]));
+            }
+            set {
+                this["IsRunning"] = value;
+            }
+        }
     }
 }
