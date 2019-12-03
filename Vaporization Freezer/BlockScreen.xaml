@@ -1,0 +1,94 @@
+﻿<Window x:Class="VF.BlockScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:VF"
+        x:Name="BlockWindow"
+        mc:Ignorable="d"
+        Opacity="0.9"
+        Title="BlockScreen" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ShowInTaskbar="False" Topmost="True" WindowState="Maximized" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True">
+    <Window.Background>
+        <ImageBrush ImageSource="blockscr_bg.png" Stretch="UniformToFill"/>
+    </Window.Background>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Alt" Key="F4" Command="{Binding DoNothing}" />
+        <KeyBinding Modifiers="Alt" Key="Tab" Command="{Binding DoNothing}" />
+        <KeyBinding Modifiers="Ctrl+Alt" Key="Delete" Command="{Binding DoNothing}" />
+    </Window.InputBindings>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation From="0" Duration="00:00:04" Storyboard.TargetProperty="Opacity" To="0.9" >
+                        <DoubleAnimation.EasingFunction>
+                            <PowerEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="clockScr" From="0" BeginTime="0:0:2" Duration="00:00:02" Storyboard.TargetProperty="Background.Opacity" To="0.15" >
+                        <DoubleAnimation.EasingFunction>
+                            <PowerEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="clock" From="0" BeginTime="0:0:0" Duration="00:00:00" Storyboard.TargetProperty="Opacity" To="0" />
+                    <DoubleAnimation Storyboard.TargetName="clock" From="0" BeginTime="0:0:3" Duration="00:00:03" Storyboard.TargetProperty="Opacity" To="1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid x:Name="clockScr">
+        <Grid.Background>
+            <ImageBrush ImageSource="frost_effect.png" Opacity="0"/>
+        </Grid.Background>
+        <Button x:Name="clock" Content="{Binding ClockStr, Mode=OneWay, FallbackValue=06 : 30}" Command="{Binding StopAlarm}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsClickable}" Width="auto" FontWeight="Bold" FontSize="86" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Focusable="False" Cursor="Hand" Foreground="White">
+            <Button.Template>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="Border" Background="{x:Null}">
+                        <ContentPresenter />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Background" Value="{x:Null}" />
+                            <Setter Property="Foreground" Value="Red"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Resources>
+                        <Storyboard x:Key="GlowOn">
+                            <ColorAnimation To="Red" Duration="0:0:0.4" Storyboard.TargetProperty="(Effect).Color"/>
+                        </Storyboard>
+                        <Storyboard x:Key="GlowOff">
+                            <ColorAnimation To="LightGray" Duration="0:0:0.4" Storyboard.TargetProperty="(Effect).Color"/>
+                        </Storyboard>
+                    </Style.Resources>
+
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect ShadowDepth="0"
+                                      BlurRadius="40"
+                                      Color="LightGray" RenderingBias="Quality"/>
+                        </Setter.Value>
+                    </Setter>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard
+                              Storyboard="{StaticResource GlowOn}"/>
+                            </Trigger.EnterActions>
+
+                            <Trigger.ExitActions>
+                                <BeginStoryboard
+                              Storyboard="{StaticResource GlowOff}"/>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+    </Grid>
+</Window>

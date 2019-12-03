@@ -49,12 +49,12 @@ namespace VF.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public string InitialedTime {
+        public double InitialedTick {
             get {
-                return ((string)(this["InitialedTime"]));
+                return ((double)(this["InitialedTick"]));
             }
             set {
-                this["InitialedTime"] = value;
+                this["InitialedTick"] = value;
             }
         }
         
@@ -67,6 +67,30 @@ namespace VF.Properties {
             }
             set {
                 this["IsRunning"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsLogOnScreen {
+            get {
+                return ((bool)(this["IsLogOnScreen"]));
+            }
+            set {
+                this["IsLogOnScreen"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RepeatAlarm {
+            get {
+                return ((bool)(this["RepeatAlarm"]));
+            }
+            set {
+                this["RepeatAlarm"] = value;
             }
         }
     }

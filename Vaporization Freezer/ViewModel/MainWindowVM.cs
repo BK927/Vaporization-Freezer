@@ -16,123 +16,134 @@ namespace VF.ViewModel
 {
     class MainWindowVM : BaseViewModel
     {
-        [DllImport("user32.dll")]
-        public static extern void LockWorkStation();
-
-        static private Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-
-        private string minutes;
-        private static System.Timers.Timer blockTimer = new System.Timers.Timer();
-        private static System.Timers.Timer blockRepeater = new System.Timers.Timer(100);
-        static private SoundPlayer freezingSfx = new SoundPlayer(Properties.Resources.freezing_sfx);
-        static private SoundPlayer iceBreakSfx = new SoundPlayer(Properties.Resources.ice_destruction_sfx);
-        public NoConditionCMD freezeBtn { get; private set; }
-        public string Minutes { get { return minutes; } set { minutes = value; OnPropertyChanged("Minutes"); } }
-        public Visibility BlockScrSwitch
+        public NoConditionCMD FreezeBtn { get; private set; }
+        public NoConditionCMD RepeatAlarmBtn { get; private set; }
+        //1 tick == 30min
+        public double Tick
         {
             get
             {
-                if (blockTimer.Enabled)
-                {
-                    return Visibility.Visible;
-                }
-                else
-                {
-                    return Visibility.Collapsed;
-                }
+                return tick;
             }
-            private set { }
+
+            set
+            {
+                tick = value;
+                OnPropertyChanged("Tick");
+            }
+        }
+        public Visibility CoverVisiblity
+        {
+            get
+            {
+                return coverVisiblity;
+            }
+            private set
+            {
+                coverVisiblity = value;
+                OnPropertyChanged("CoverVisiblity");
+            }
+        }
+        public Visibility CoverBtnVisibility
+        {
+            get
+            {
+                return coverBtnVisibility;
+            }
+            private set
+            {
+                coverBtnVisibility = value;
+                OnPropertyChanged("CoverBtnVisibility");
+            }
         }
         public bool StrongSwitch
         {
             get
             {
-                return Properties.Settings.Default.IsStrong;
+                return Blocker.IsStrong;
             }
 
             set
             {
-                Properties.Settings.Default.IsStrong = value;
-                Properties.Settings.Default.Save();
+                Blocker.IsStrong = value;
                 OnPropertyChanged("StrongSwitch");
             }
         }
+        public bool LogOnScrSwitch
+        {
+            get
+            {
+                return Blocker.LogOnScreen;
+            }
+
+            set
+            {
+                Blocker.LogOnScreen = value;
+                OnPropertyChanged("LockScr");
+            }
+        }
+        public bool RepeatAlarm
+        {
+            get
+            {
+                return Blocker.RepeatAlarm;
+            }
+
+            set
+            {
+                Blocker.RepeatAlarm = value;
+                OnPropertyChanged("RepeatAlarm");
+            }
+        }
+
+        private double tick;
+        private Visibility coverVisiblity;
+        private Visibility coverBtnVisibility;
 
         public MainWindowVM()
         {
-            freezeBtn = new NoConditionCMD(freeze);
-            blockTimer.Elapsed += (sender, e) => blockOver();
-            blockTimer.AutoReset = false;
+            Tick = 1;
+            CoverVisiblity = Visibility.Collapsed;
+            FreezeBtn = new NoConditionCMD(pressFreezeBtn);
+            RepeatAlarmBtn = new NoConditionCMD(pressConfirmBtn);
+            Blocker.AlarmOverCallBack = TimeOverCallBack;
+            Blocker.RepeatOverCallBack = () => CoverVisiblity = Visibility.Collapsed;
 
-            blockRepeater.Elapsed += (sender, e) => LockWorkStation();
-            blockRepeater.AutoReset = true;
-
-            if(Properties.Settings.Default.IsRunning)
+            if (Properties.Settings.Default.IsRunning && Properties.Settings.Default.IsStrong)
             {
-                startBlocking();
+                Tick = Properties.Settings.Default.InitialedTick;
+                OnPropertyChanged("Tick");
+                Blocker.StartBlocking(Properties.Settings.Default.OverTime.Subtract(DateTime.Now).TotalMilliseconds);
             }
         }
 
-        private void startBlocking()
+        private void TimeOverCallBack()
         {
-            if(Properties.Settings.Default.IsRunning && Properties.Settings.Default.IsStrong)
+            if (RepeatAlarm && LogOnScrSwitch)
             {
-                Minutes = Properties.Settings.Default.InitialedTime;
-                double remainedTime = Properties.Settings.Default.OverTime.Subtract(DateTime.Now).TotalMilliseconds;
-
-                if(remainedTime <= 0)
-                {
-                    blockOver();
-                    return;
-                }
-                else
-                {
-                    blockTimer.Interval = remainedTime;
-                }
-            }
-
-            if (string.IsNullOrEmpty(Minutes))
-            {
-                SystemSounds.Hand.Play();
-                System.Windows.MessageBox.Show("Please input value");
+                CoverBtnVisibility = Visibility.Visible;
             }
             else
             {
-                if (Properties.Settings.Default.IsStrong && !Properties.Settings.Default.IsRunning)
-                {
-                    double min = Convert.ToDouble(Minutes);
-
-                    Properties.Settings.Default.InitialedTime = Minutes;
-                    Properties.Settings.Default.OverTime = DateTime.Now.AddMinutes(min);
-                    Properties.Settings.Default.IsRunning = true;
-                    Properties.Settings.Default.Save();
-
-                    blockTimer.Interval = min * 60000;
-
-                    key.SetValue("Vaporization Freezer", Process.GetCurrentProcess().MainModule.FileName);
-                }
-
-                blockTimer.Start();
-                blockRepeater.Start();
-                freezingSfx.Play();
-                OnPropertyChanged("BlockScrSwitch");
+                CoverVisiblity = Visibility.Collapsed;
             }
         }
 
-        private void blockOver()
+        private void pressFreezeBtn(Object obj)
         {
-            blockTimer.Stop();
-            blockRepeater.Stop();
-            Properties.Settings.Default.IsRunning = false;
-            Properties.Settings.Default.Save();
-            key.DeleteValue("Vaporization Freezer", false);
-            OnPropertyChanged("BlockScrSwitch");
-            iceBreakSfx.Play();
+#if DEBUG
+            Blocker.StartBlocking(Tick * 3 * 60000);
+#else
+            Blocker.StartBlocking(Tick * 30 * 60000);
+#endif
+            CoverVisiblity = Visibility.Visible;
+            CoverBtnVisibility = Visibility.Collapsed;
         }
 
-        private void freeze(object obj)
+        private void pressConfirmBtn(Object obj)
         {
-            startBlocking();
+            Blocker.TurnOffRepeatAlarm();
+            CoverVisiblity = Visibility.Collapsed;
         }
     }
 }

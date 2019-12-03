@@ -72,6 +72,15 @@ namespace VF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream ice_crack {
+            get {
+                return ResourceManager.GetStream("ice_crack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream ice_destruction_sfx {
             get {
                 return ResourceManager.GetStream("ice_destruction_sfx", resourceCulture);

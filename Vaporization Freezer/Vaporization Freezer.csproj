@@ -104,6 +104,12 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonWin32, Version=2.0.0.0, Culture=neutral, PublicKeyToken=a0a4edcfe233918d, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonWin32.2.1.0.3\lib\net35-Client\CommonWin32.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.3\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -124,9 +130,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Blocker.cs" />
+    <Compile Include="BlockScreen.xaml.cs">
+      <DependentUpon>BlockScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converter\SlideToTime.cs" />
+    <Compile Include="ViewModel\BlockScrVM.cs" />
     <Compile Include="ViewModel\Command\NoConditionCMD.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
-    <Compile Include="WaterMarkTextBox.cs" />
+    <Compile Include="Converter\WaterMarkTextBox.cs" />
+    <Page Include="BlockScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -202,6 +218,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="blockscr_bg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="frost_effect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ice_crack1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ice_crack2.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ice_crack.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

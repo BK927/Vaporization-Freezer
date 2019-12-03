@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:VF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="CheckStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="Foreground" Value="DarkSlateGray"/>
+        </Style>
+        
+        
     </Application.Resources>
 </Application>
