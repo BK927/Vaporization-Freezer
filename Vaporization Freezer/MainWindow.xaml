@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:r="clr-namespace:Thorner.RadialControls.Controls;assembly=RadialControls"
         xmlns:local="clr-namespace:VF"
         xmlns:converter="clr-namespace:VF.Converter"
         mc:Ignorable="d"
@@ -46,7 +47,7 @@
                 <RowDefinition Height="48*"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical">
-                <Slider x:Name="timeSlider" Value="{Binding Tick}" IsSnapToTickEnabled="True" Margin="10,15" Minimum="1" Maximum="12" >
+                <Slider x:Name="timeSlider" Value="{Binding Tick}" IsSnapToTickEnabled="True" Margin="10,15" Minimum="1" Maximum="{StaticResource MaximunTick}" >
                     <Slider.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
                     </Slider.Effect>

@@ -15,7 +15,7 @@ namespace VF.ViewModel
         public bool IsClickable { get; private set; }
         public NoConditionCMD StopAlarm { get; private set; }
         public NoConditionCMD DoNothing { get; private set; }
-        private System.Timers.Timer oneMinTimer = new System.Timers.Timer(1000);
+        private System.Timers.Timer oneMinTimer = new System.Timers.Timer(100);
         private TimeSpan remainedTime;
         private bool closingAllowed = false;
 
@@ -40,7 +40,7 @@ namespace VF.ViewModel
             ClockStr = ((int)displayedTime.TotalHours).ToString("D2") + " : " + ((int)displayedTime.Minutes).ToString("D2");
             OnPropertyChanged("ClockStr");
 
-            if(remainedTime.TotalSeconds <= 0)
+            if(remainedTime.TotalMilliseconds <= 0)
             {
                 oneMinTimer.Stop();
 
@@ -61,7 +61,7 @@ namespace VF.ViewModel
                     }
                 }
             }
-            remainedTime = remainedTime.Subtract(new TimeSpan(0,0,1));
+            remainedTime = remainedTime.Subtract(new TimeSpan(0, 0, 0, 0, 100));
         }
 
         private void stopAlarm(Object win)

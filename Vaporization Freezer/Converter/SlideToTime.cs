@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace VF.Converter
@@ -13,9 +14,9 @@ namespace VF.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
 #if DEBUG
-            int totalMin = (int)((double)value) * 3;
+            int totalMin = (int)((double)value) * (Int32)Application.Current.Resources["TimePerTick_DEBUG"];
 #else
-            int totalMin = (int)((double)value) * 30;
+            int totalMin = (int)((double)value) * (Int32)Application.Current.Resources["TimePerTick"];
 #endif
 
             int hour = totalMin / 60;
