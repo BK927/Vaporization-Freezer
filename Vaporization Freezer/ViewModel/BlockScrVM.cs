@@ -15,53 +15,63 @@ namespace VF.ViewModel
         public bool IsClickable { get; private set; }
         public NoConditionCMD StopAlarm { get; private set; }
         public NoConditionCMD DoNothing { get; private set; }
-        private System.Timers.Timer oneMinTimer = new System.Timers.Timer(100);
-        private TimeSpan remainedTime;
+        private System.Timers.Timer oneMinTimer = new System.Timers.Timer(1000);
+        private TimeSpan displayedTime;
         private bool closingAllowed = false;
 
         public BlockScrVM(DateTime overTime)
         {
             DoNothing = new NoConditionCMD((obj) => { });
             StopAlarm = new NoConditionCMD(stopAlarm);
-            this.remainedTime = overTime.Subtract(DateTime.Now);
+            this.displayedTime = overTime.Subtract(DateTime.Now).Add(new TimeSpan(0, 1, 0));
             IsClickable = false;
             oneMinTimer.Elapsed += OnTimedEvent;
             oneMinTimer.AutoReset = true;
             oneMinTimer.Start();
 
-            TimeSpan displayedTime = remainedTime.Add(new TimeSpan(0, 1, 0));
             ClockStr = ((int)displayedTime.TotalHours).ToString("D2") + " : " + ((int)displayedTime.Minutes).ToString("D2");
             OnPropertyChanged("ClockStr");
+
+            Blocker.AlarmOverCallBack += blockerCallback;
+        }
+        ~BlockScrVM()
+        {
+            Blocker.AlarmOverCallBack -= blockerCallback;
         }
 
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
         {
-            TimeSpan displayedTime = remainedTime.Add(new TimeSpan(0, 1, 0));
+#if DEBUG
+            ClockStr = ((int)displayedTime.TotalHours).ToString("D2") + " : " + ((int)displayedTime.Minutes).ToString("D2") + " : " + ((int)displayedTime.Seconds).ToString("D2");
+#else
             ClockStr = ((int)displayedTime.TotalHours).ToString("D2") + " : " + ((int)displayedTime.Minutes).ToString("D2");
+#endif
+
             OnPropertyChanged("ClockStr");
 
-            if(remainedTime.TotalMilliseconds <= 0)
-            {
-                oneMinTimer.Stop();
+            this.displayedTime = this.displayedTime.Subtract(new TimeSpan(0, 0, 1));
+        }
 
-                if(Properties.Settings.Default.RepeatAlarm)
+        private void blockerCallback()
+        {
+            oneMinTimer.Stop();
+
+            if (Properties.Settings.Default.RepeatAlarm)
+            {
+                IsClickable = true;
+                OnPropertyChanged("IsClickable");
+            }
+            else
+            {
+                foreach (Window window in Application.Current.Windows)
                 {
-                    IsClickable = true;
-                    OnPropertyChanged("IsClickable");
-                }
-                else
-                {
-                    foreach(Window window in Application.Current.Windows)
+                    if (window is BlockScreen)
                     {
-                        if(window is BlockScreen)
-                        {
-                            window.Close();
-                            break;
-                        }
+                        window.Close();
+                        break;
                     }
                 }
             }
-            remainedTime = remainedTime.Subtract(new TimeSpan(0, 0, 0, 0, 100));
         }
 
         private void stopAlarm(Object win)

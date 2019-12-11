@@ -132,9 +132,9 @@ namespace VF.ViewModel
         private void pressFreezeBtn(Object obj)
         {
 #if DEBUG
-            Blocker.StartBlocking(Tick * 3 * 60000);
+            Blocker.StartBlocking(Tick * (Int32)Application.Current.Resources["TimePerTick_DEBUG"] * 60000);
 #else
-            Blocker.StartBlocking(Tick * 30 * 60000);
+            Blocker.StartBlocking(Tick * (Int32)Application.Current.Resources["TimePerTick"] * 60000);
 #endif
             CoverVisiblity = Visibility.Visible;
             CoverBtnVisibility = Visibility.Collapsed;
