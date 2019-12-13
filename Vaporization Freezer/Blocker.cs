@@ -85,7 +85,7 @@ namespace VF
                 Properties.Settings.Default.Save();
             }
         }
-        static private bool autoResetCallBack { get; set; } = true;
+        static private bool autoResetCallBack { get; set; } = false;
 
         static Blocker()
         {
@@ -153,6 +153,10 @@ namespace VF
             {
                 iceCrackSfx.PlayLooping();
                 IsRinging = true;
+            }
+            else
+            {
+                iceBreakSfx.Play();
             }
 
             AlarmOverCallBack?.Invoke();

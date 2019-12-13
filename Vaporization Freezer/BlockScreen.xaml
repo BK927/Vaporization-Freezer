@@ -8,7 +8,7 @@
         x:Name="BlockWindow"
         mc:Ignorable="d"
         Opacity="0.9"
-        Title="BlockScreen" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ShowInTaskbar="False" Topmost="True" WindowState="Maximized" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True">
+        Title="BlockScreen" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ShowInTaskbar="False" Topmost="True" WindowStyle="None" ResizeMode="NoResize" WindowState="Maximized" AllowsTransparency="True">
     <Window.Background>
         <ImageBrush ImageSource="blockscr_bg.png" Stretch="UniformToFill"/>
     </Window.Background>
@@ -41,7 +41,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="frost_effect.png" Opacity="0"/>
         </Grid.Background>
-        <Button x:Name="clock" Content="{Binding ClockStr, Mode=OneWay, FallbackValue=06 : 30}" Command="{Binding StopAlarm}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsClickable}" Width="auto" FontWeight="Bold" FontSize="86" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Focusable="False" Cursor="Hand" Foreground="White">
+        <Button x:Name="clock" Content="{Binding ClockStr, Mode=OneWay, FallbackValue=06 : 30}" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" IsEnabled="{Binding IsClickable}" Width="auto" FontWeight="Bold" FontSize="86" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Focusable="False" Cursor="Hand" Foreground="White">
             <Button.Template>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border x:Name="Border" Background="{x:Null}">

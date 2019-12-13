@@ -18,7 +18,7 @@ namespace VF
     /// <summary>
     /// Interaction logic for BlockScreen.xaml
     /// </summary>
-    public partial class BlockScreen : Window
+    public partial class BlockScreen : Window, ICloseable
     {
         public BlockScreen(DateTime overTime)
         {

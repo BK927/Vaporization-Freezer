@@ -137,9 +137,12 @@
     <Compile Include="BlockScreen.xaml.cs">
       <DependentUpon>BlockScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CloseHelper.cs" />
     <Compile Include="Converter\SlideToTime.cs" />
+    <Compile Include="ICloseable.cs" />
     <Compile Include="ViewModel\BlockScrVM.cs" />
     <Compile Include="ViewModel\Command\NoConditionCMD.cs" />
+    <Compile Include="ViewModel\Command\RelayCommand.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="Converter\WaterMarkTextBox.cs" />
     <Page Include="BlockScreen.xaml">
