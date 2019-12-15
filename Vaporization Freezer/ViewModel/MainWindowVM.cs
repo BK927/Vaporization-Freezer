@@ -23,13 +23,32 @@ namespace VF.ViewModel
         {
             get
             {
-                return tick;
+                //TODO: Fix CoerceValueCallback
+                return tick + 1;
             }
 
             set
             {
                 tick = value;
                 OnPropertyChanged("Tick");
+            }
+        }
+        public double TimePerTick
+        {
+            get
+            {
+                //TODO: Fix CoerceValueCallback
+#if DEBUG
+                return (timePerTick + 1) * (Int32)Application.Current.Resources["TickPerTime_DEBUG"];
+#else
+                return (timePerTick + 1) * (Int32)Application.Current.Resources["TickPerTime"];
+#endif
+            }
+
+            set
+            {
+                timePerTick = value;
+                OnPropertyChanged("TimePerTick");
             }
         }
         public Visibility CoverVisiblity
@@ -97,12 +116,12 @@ namespace VF.ViewModel
         }
 
         private double tick;
+        private double timePerTick;
         private Visibility coverVisiblity;
         private Visibility coverBtnVisibility;
 
         public MainWindowVM()
         {
-            Tick = 1;
             CoverVisiblity = Visibility.Collapsed;
             FreezeBtn = new NoConditionCMD(pressFreezeBtn);
             RepeatAlarmBtn = new NoConditionCMD(pressConfirmBtn);
@@ -112,7 +131,6 @@ namespace VF.ViewModel
             if (Properties.Settings.Default.IsRunning && Properties.Settings.Default.IsStrong)
             {
                 Tick = Properties.Settings.Default.InitialedTick;
-                OnPropertyChanged("Tick");
                 Blocker.StartBlocking(Properties.Settings.Default.OverTime.Subtract(DateTime.Now).TotalMilliseconds);
             }
         }
@@ -131,11 +149,7 @@ namespace VF.ViewModel
 
         private void pressFreezeBtn(Object obj)
         {
-#if DEBUG
-            Blocker.StartBlocking(Tick * (Int32)Application.Current.Resources["TimePerTick_DEBUG"] * 60000);
-#else
-            Blocker.StartBlocking(Tick * (Int32)Application.Current.Resources["TimePerTick"] * 60000);
-#endif
+            Blocker.StartBlocking(Tick * TimePerTick * 60000);
             CoverVisiblity = Visibility.Visible;
             CoverBtnVisibility = Visibility.Collapsed;
         }

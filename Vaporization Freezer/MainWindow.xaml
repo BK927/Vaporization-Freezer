@@ -7,9 +7,10 @@
         xmlns:local="clr-namespace:VF"
         xmlns:converter="clr-namespace:VF.Converter"
         mc:Ignorable="d"
-        Title="Vaporization Freezer" Height="290.4" Width="370" Icon="icon.ico" ResizeMode="NoResize" Background="White">
+        Title="Vaporization Freezer" Height="322.2" Width="370" Icon="icon.ico" ResizeMode="NoResize" Background="White">
     <Window.Resources>
         <converter:SlideToTime x:Key="SliderToTime"/>
+        <converter:TickSetting x:Key="TickSetting"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -42,31 +43,44 @@
         </Grid>
         <Grid Margin="10" RenderTransformOrigin="0.512,0.412" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="132*"/>
-                <RowDefinition Height="61*"/>
-                <RowDefinition Height="48*"/>
+                <RowDefinition Height="63*"/>
+                <RowDefinition Height="34*"/>
+                <RowDefinition Height="31*"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Vertical">
-                <Slider x:Name="timeSlider" Value="{Binding Tick}" IsSnapToTickEnabled="True" Margin="10,15" Minimum="1" Maximum="{StaticResource MaximunTick}" >
+                <Slider x:Name="timeSlider" Value="{Binding Tick, Mode=OneWayToSource}" IsSnapToTickEnabled="True" Margin="10,15" Minimum="0" Maximum="{StaticResource MaximunTick}" >
                     <Slider.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="5" Opacity="0.3"/>
                     </Slider.Effect>
                 </Slider>
-                <TextBlock Text="{Binding ElementName=timeSlider, Path=Value, Converter={StaticResource SliderToTime}}" HorizontalAlignment="Center" FontWeight="Bold" FontSize="24" Foreground="White">
+                <TextBlock HorizontalAlignment="Center" FontWeight="Bold" FontSize="24" Foreground="White">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource SliderToTime}" Mode="OneWay" UpdateSourceTrigger="PropertyChanged" FallbackValue="Fail">
+                            <Binding ElementName="timeSlider" Path="Value"/>
+                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Window}" Path="DataContext.TimePerTick" />
+                        </MultiBinding>
+                    </TextBlock.Text>
                     <TextBlock.Effect>
                         <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="1" Color="DeepSkyBlue"/>
                     </TextBlock.Effect>
                 </TextBlock>
             </StackPanel>
-            <Button Command="{Binding FreezeBtn}" x:Name="freezeBtn" Grid.Row="1" Width="160" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!" Margin="78,5.2,78,3" Grid.RowSpan="1">
+            <Button Command="{Binding FreezeBtn}" x:Name="freezeBtn" Grid.Row="1" Width="160" HorizontalAlignment="Center" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" Content="FREEZE!!" Margin="92,5.2,92,3" Grid.RowSpan="1">
                 <Button.Effect>
                     <DropShadowEffect BlurRadius="5" ShadowDepth="3" Opacity="0.1"/>
                 </Button.Effect>
             </Button>
-            <StackPanel  Grid.Column="0" Grid.Row="2" Orientation="Horizontal" Margin="0,10,0,0"  >
-                <CheckBox x:Name="logonScrSwitch" IsChecked="{Binding LogOnScrSwitch}" Style="{StaticResource CheckStyle}" ToolTip="Use Windows lock screen as block screen">Lock Screen</CheckBox>
-                <CheckBox x:Name="strongSwitch" IsChecked="{Binding StrongSwitch}" Style="{StaticResource CheckStyle}" ToolTip="This will block your computer even after rebooting">Strong Blocking</CheckBox>
-                <CheckBox x:Name="repeatAlarmSwitch" IsChecked="{Binding RepeatAlarm}" Style="{StaticResource CheckStyle}" ToolTip="This will repeat alarm until stop manually">Repeat Alarm</CheckBox>
+            <StackPanel Margin="0,10,0,0" Orientation="Vertical" Grid.Row="2">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0"  >
+                    <CheckBox x:Name="logonScrSwitch" IsChecked="{Binding LogOnScrSwitch}" Style="{StaticResource CheckStyle}" ToolTip="Use Windows lock screen as block screen" Content="Lock Screen"/>
+                    <CheckBox x:Name="strongSwitch" IsChecked="{Binding StrongSwitch}" Style="{StaticResource CheckStyle}" ToolTip="This will block your computer even after rebooting" Content="Strong Blocking"/>
+                    <CheckBox x:Name="repeatAlarmSwitch" IsChecked="{Binding RepeatAlarm}" Style="{StaticResource CheckStyle}" ToolTip="This will repeat alarm until stop manually" Content="Repeat Alarm"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <Label Style="{StaticResource SettingStyle}">Time per tick:</Label>
+                    <Label Name="TimePerTickLabel" Style="{StaticResource SettingStyle}" Content="{Binding TimePerTick, Converter={StaticResource TickSetting}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=fail}"/>
+                    <Slider Name="TimeSettingSlider" Style="{StaticResource Horizontal_Slider}" Width="70" Height="20" Value="{Binding TimePerTick, Mode=OneWayToSource}" IsSnapToTickEnabled="True" Minimum="0" Maximum="11" Opacity="0.75" />
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>

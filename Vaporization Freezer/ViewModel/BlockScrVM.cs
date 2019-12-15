@@ -71,7 +71,7 @@ namespace VF.ViewModel
 
             this.displayedTime = this.displayedTime.Subtract(new TimeSpan(0, 0, 1));
 
-            if(this.displayedTime.Minutes <= 0)
+            if(this.displayedTime.TotalSeconds <= 50)
             {
                 this.oneMinTimer.Stop();
             }

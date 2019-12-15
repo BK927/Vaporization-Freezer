@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="CloseHelper.cs" />
     <Compile Include="Converter\SlideToTime.cs" />
+    <Compile Include="Converter\TickSetting.cs" />
     <Compile Include="ICloseable.cs" />
     <Compile Include="ViewModel\BlockScrVM.cs" />
     <Compile Include="ViewModel\Command\NoConditionCMD.cs" />

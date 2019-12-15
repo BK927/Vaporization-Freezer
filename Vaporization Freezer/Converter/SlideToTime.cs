@@ -9,23 +9,20 @@ using System.Windows.Data;
 
 namespace VF.Converter
 {
-    class SlideToTime : IValueConverter
+    class SlideToTime : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-#if DEBUG
-            int totalMin = (int)((double)value) * (Int32)Application.Current.Resources["TimePerTick_DEBUG"];
-#else
-            int totalMin = (int)((double)value) * (Int32)Application.Current.Resources["TimePerTick"];
-#endif
-
+            //TODO: Fix CoerceValueCallback
+            //values[0] == Tick, values[1] == TimePerTick
+            int totalMin = (int)(((double)values[0] + 1) * ((double)values[1]));
             int hour = totalMin / 60;
             int min = totalMin % 60;
 
             return hour.ToString() + "h " + min.ToString() + "min";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
